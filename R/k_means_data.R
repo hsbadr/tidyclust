@@ -272,6 +272,25 @@ make_k_means <- function() {
         )
     )
   )
+
+  modelenv::set_pred(
+    model = "k_means",
+    eng = "ClusterR",
+    mode = "partition",
+    type = "raw",
+    value = list(
+      pre = NULL,
+      post = NULL,
+      func = c(fun = ".k_means_predict_ClusterR"),
+      args =
+        list(
+          object = rlang::expr(object$fit),
+          new_data = rlang::expr(new_data),
+          fuzzy = TRUE,
+          threads = as.integer(Sys.getenv("OMP_NUM_THREADS", 1))
+        )
+    )
+  )
 }
 
 # nocov end
