@@ -49,15 +49,9 @@ Both categorical and numeric predictors are required.
 
 \subsection{References}{
 \itemize{
-\item Szepannek, G. (2018): clustMixType: User-Friendly Clustering of
-Mixed-Type Data in R, The R Journal 10/2, 200-208,
-\url{doi:10.32614/RJ-2018-048}.
-\item Aschenbruck, R., Szepannek, G., Wilhelm, A. (2022): Imputation
-Strategies for Clustering Mixed‑Type Data with Missing Values, Journal
-of Classification, \url{doi:10.1007/s00357-022-09422-y}.
-\item Z.Huang (1998): Extensions to the k-Means Algorithm for Clustering
-Large Data Sets with Categorical Variables, Data Mining and Knowledge
-Discovery 2, 283-304.
+\item Szepannek, G. (2018): clustMixType: User-Friendly Clustering of Mixed-Type Data in R, The R Journal 10/2, 200-208, \url{doi:10.32614/RJ-2018-048}.
+\item Aschenbruck, R., Szepannek, G., Wilhelm, A. (2022): Imputation Strategies for Clustering Mixed‑Type Data with Missing Values, Journal of Classification, \url{doi:10.1007/s00357-022-09422-y}.
+\item Z.Huang (1998): Extensions to the k-Means Algorithm for Clustering Large Data Sets with Categorical Variables, Data Mining and Knowledge Discovery 2, 283-304.
 }
 }
 }
