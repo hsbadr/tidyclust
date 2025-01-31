@@ -14,10 +14,10 @@ make_predictions <- function(x, prefix, n_clusters) {
 .k_means_predict_ClusterR <- function(object, new_data,
                                       fuzzy = FALSE, ...,
                                       prefix = "Cluster_") {
-  n_clusters <- length(object$obs_per_cluster)
+  n_clusters <- nrow(object$centroids)
 
   preds <- ClusterR:::predict_KMeans(new_data,
-                                     CENTROIDS = object$centroids,
+                                     CENTROIDS = as.matrix(object$centroids),
                                      fuzzy = fuzzy, ...)
 
   if (fuzzy) {
@@ -32,6 +32,33 @@ make_predictions <- function(x, prefix, n_clusters) {
     )
   } else {
     make_predictions(preds, prefix, n_clusters)
+  }
+}
+
+.gmm_predict_ClusterR <- function(object, new_data, fuzzy = FALSE, ..., prefix = "Cluster_") {
+  if (length(dim(object$covariance_matrices)) == 2) {
+    n_clusters <- nrow(object$centroids)
+
+    preds <- ClusterR:::predict_GMM(new_data,
+                                    CENTROIDS = as.matrix(object$centroids),
+                                    COVARIANCE = as.matrix(object$covariance_matrices),
+                                    WEIGHTS = object$weights, ...)
+
+    if (fuzzy) {
+      colnames(preds$cluster_proba) <- paste0(prefix, seq_len(n_clusters))
+
+      return(
+        dplyr::bind_cols(
+          preds$cluster_proba,
+          .pred_prob = apply(preds$cluster_proba, 1, max),
+          .pred_cluster = make_predictions(apply(preds$cluster_proba, 1, which.max), prefix, n_clusters)
+        )
+      )
+    } else {
+      make_predictions(preds$cluster_labels, prefix, n_clusters)
+    }
+  } else {
+    .k_means_predict_ClusterR(object, new_data, fuzzy = fuzzy, ..., prefix = prefix)
   }
 }
 

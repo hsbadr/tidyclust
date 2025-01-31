@@ -99,6 +99,12 @@ extract_cluster_assignment.KMeansCluster <- function(object, ...) {
 }
 
 #' @export
+extract_cluster_assignment.GMMCluster <- function(object, ...) {
+  n_clusters <- length(object$obs_per_cluster)
+  cluster_assignment_tibble(object$clusters, n_clusters, ...)
+}
+
+#' @export
 extract_cluster_assignment.kproto <- function(object, ...) {
   n_clusters <- length(object$size)
   cluster_assignment_tibble(object$cluster, n_clusters, ...)
