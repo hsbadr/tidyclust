@@ -144,6 +144,59 @@ extract_fit_summary.kmodes <- function(object, ..., prefix = "Cluster_") {
 }
 
 #' @export
+extract_fit_summary.GMMCluster <- function(object, ...) {
+  names <- paste0("Cluster_", seq_len(nrow(object$centroids)))
+
+  cluster_asignments <- factor(
+    names[object$clusters],
+    levels = names
+  )
+
+  centroids <- tibble::as_tibble(object$centroids)
+  covariance_matrices <- tibble::as_tibble(object$covariance_matrices)
+
+  list(
+    cluster_names = names,
+    centroids = centroids,
+    n_members = object$obs_per_cluster,
+    n = object$n,
+    m = object$m,
+    k = object$k,
+    df = object$df,
+    aic = object$aic,
+    bic = object$bic,
+    loglik = object$loglik,
+    log_likelihood = object$log_likelihood,
+    probabilities = object$probabilities,
+    covariance_matrices = object$covariance_matrices,
+    weights = object$weights,
+    me = object$me,
+    me_between = object$me_between,
+    me_within = object$me_within,
+    me_total = object$me_total,
+    me_ratio = object$me_ratio,
+    mse = object$mse,
+    mse_between = object$mse_between,
+    mse_within = object$mse_within,
+    mse_total = object$mse_total,
+    mse_ratio = object$mse_ratio,
+    se = object$se,
+    se_within = object$se_within,
+    se_between = object$se_between,
+    se_total = object$se_total,
+    se_ratio = object$se_ratio,
+    sse = object$sse,
+    sse_between = object$sse_between,
+    sse_within = object$sse_within,
+    sse_within_total_total = object$sse_within,
+    sse_total = object$sse_total,
+    sse_ratio = object$sse_ratio,
+    orig_labels = object$clusters,
+    cluster_assignments = cluster_asignments
+  )
+}
+
+#' @export
 extract_fit_summary.hclust <- function(object, ...) {
   clusts <- extract_cluster_assignment(object, ...)$.cluster
   n_clust <- dplyr::n_distinct(clusts)
