@@ -173,9 +173,5 @@ cluster_assignment_tibble <- function(
   ...,
   prefix = "Cluster_"
 ) {
-  reorder_clusts <- order(union(unique(clusters), seq_len(n_clusters)))
-  names <- paste0(prefix, seq_len(n_clusters))
-  res <- names[reorder_clusts][clusters]
-
-  tibble::tibble(.cluster = factor(res))
+  tibble::tibble(.cluster = make_predictions(clusters, prefix, n_clusters))
 }
