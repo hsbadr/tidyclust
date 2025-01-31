@@ -11,11 +11,28 @@ make_predictions <- function(x, prefix, n_clusters) {
   make_predictions(res, prefix, length(object$size))
 }
 
-.k_means_predict_ClusterR <- function(object, new_data, prefix = "Cluster_") {
-  clusters <- predict(object, new_data)
+.k_means_predict_ClusterR <- function(object, new_data,
+                                      fuzzy = FALSE, ...,
+                                      prefix = "Cluster_") {
   n_clusters <- length(object$obs_per_cluster)
 
-  make_predictions(clusters, prefix, n_clusters)
+  preds <- ClusterR:::predict_KMeans(new_data,
+                                     CENTROIDS = object$centroids,
+                                     fuzzy = fuzzy, ...)
+
+  if (fuzzy) {
+    colnames(preds) <- paste0(prefix, seq_len(n_clusters))
+
+    return(
+      dplyr::bind_cols(
+        preds,
+        .pred_prob = apply(preds, 1, max),
+        .pred_cluster = make_predictions(apply(preds, 1, which.max), prefix, n_clusters)
+      )
+    )
+  } else {
+    make_predictions(preds, prefix, n_clusters)
+  }
 }
 
 .k_means_predict_clustMixType <- function(
